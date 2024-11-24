@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+
+{% block title %}Recommendations{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="margin-bottom: 40px;">
+    <h1 class="mb-4">Crop & Fertilizer Recommendation System</h1>
+    <form action="/predict" method="post">
+        <h3>Common Inputs:</h3>
+        <div class="mb-3">
+            <label for="N" class="form-label">Nitrogen (N):</label>
+            <input type="number" class="form-control" step="any" name="N" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="P" class="form-label">Phosphorous (P):</label>
+            <input type="number" class="form-control" step="any" name="P" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="K" class="form-label">Potassium (K):</label>
+            <input type="number" class="form-control" step="any" name="K" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="temperature" class="form-label">Temperature (°C):</label>
+            <input type="number" class="form-control" step="any" name="temperature" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="humidity" class="form-label">Humidity (%):</label>
+            <input type="number" class="form-control" step="any" name="humidity" required>
+        </div>
+
+        <h3 class="mt-4">Crop Recommendation Inputs:</h3>
+        <div class="mb-3">
+            <label for="ph" class="form-label">Soil pH:</label>
+            <input type="number" class="form-control" step="any" name="ph" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="rainfall" class="form-label">Rainfall (mm):</label>
+            <input type="number" class="form-control" step="any" name="rainfall" required>
+        </div>
+
+        <h3 class="mt-4">Fertilizer Recommendation Inputs:</h3>
+        <div class="mb-3">
+            <label for="moisture" class="form-label">Moisture (%):</label>
+            <input type="number" class="form-control" step="any" name="moisture" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Get Recommendations</button>
+    </form>
+
+    {% if crop_name %}
+    <h1 class="mt-5">Recommendations:-</h2>
+    <h1>Recommended Crop:<strong> {{ crop_name }}</strong></h1>
+    <h1>Recommended Fertilizer:<strong> {{ fertilizer_name }}</strong></h1>
+    <h1>Organic Alternatives:<strong> {{ alternatives }}</strong></h1>
+    <div class="container" style="background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <h1>Organic Fertilizers</h1>
+        
+        <h2 style="font-weight: bold;">Compost</h2>
+        <h3 style="font-weight: bold;">Uses:</h3>
+        <ul>
+            <li>Enhances soil fertility</li>
+            <li>Improves soil structure</li>
+            <li>Increases water retention capacity</li>
+            <li>Suppresses plant diseases and pests</li>
+            <li>Reduces the need for chemical fertilizers</li>
+        </ul>
+        <h3 style="font-weight: bold;">Advantages:</h3>
+        <ul>
+            <li>Sustainable and eco-friendly</li>
+            <li>Low-cost and easy to produce</li>
+            <li>Improves soil health over time</li>
+            <li>Reduces soil erosion</li>
+            <li>Enhances plant growth and yield</li>
+        </ul>
+        <h3 style="font-weight: bold;">Availability:</h3>
+        <ul>
+            <li>Widely available, can be produced at home or purchased commercially</li>
+            <li>Ingredients are readily available, such as kitchen scraps and yard waste</li>
+        </ul>
+        <h3 style="font-weight: bold;">Awareness:</h3>
+        <ul>
+            <li>Increasing awareness, especially among organic farmers and gardeners</li>
+            <li>Government initiatives and educational programs promote composting</li>
+        </ul>
+    
+        <h2 style="font-weight: bold;">Vermicompost</h2>
+        <h3 style="font-weight: bold;">Uses:</h3>
+        <ul>
+            <li>Excellent organic fertilizer rich in nutrients</li>
+            <li>Improves soil aeration and water retention</li>
+            <li>Suppresses soil-borne diseases and pests</li>
+            <li>Enhances plant growth and yield</li>
+            <li>Reduces chemical fertilizer use</li>
+        </ul>
+        <h3 style="font-weight: bold;">Advantages:</h3>
+        <ul>
+            <li>Highly nutrient-rich</li>
+            <li>Odor-free and easy to handle</li>
+            <li>Fast decomposition process</li>
+            <li>Can be used on a variety of plants</li>
+            <li>Reduces waste and promotes sustainability</li>
+        </ul>
+        <h3 style="font-weight: bold;">Availability:</h3>
+        <ul>
+            <li>Commercially available in various forms</li>
+            <li>Can be produced at home using vermicomposting bins</li>
+        </ul>
+        <h3 style="font-weight: bold;">Awareness:</h3>
+        <ul>
+            <li>Growing awareness among organic farmers and gardeners</li>
+            <li>Government and NGOs promote vermicomposting for sustainable agriculture</li>
+        </ul>
+    
+        <h2 style="font-weight: bold;">Green Manure</h2>
+        <h3 style="font-weight: bold;">Uses:</h3>
+        <ul>
+            <li>Enhances soil fertility by adding organic matter</li>
+            <li>Improves soil structure</li>
+            <li>Suppresses weeds</li>
+            <li>Protects soil from erosion</li>
+            <li>Increases water-holding capacity</li>
+        </ul>
+        <h3 style="font-weight: bold;">Advantages:</h3>
+        <ul>
+            <li>Sustainable and eco-friendly</li>
+            <li>Low-cost and easy to implement</li>
+            <li>Improves soil health over time</li>
+            <li>Reduces the need for chemical fertilizers</li>
+            <li>Can be integrated into crop rotation</li>
+        </ul>
+        <h3 style="font-weight: bold;">Availability:</h3>
+        <ul>
+            <li>Depends on local climate and soil conditions</li>
+            <li>Various green manure crops can be grown, such as legumes, grasses, and oilseeds</li>
+        </ul>
+        <h3 style="font-weight: bold;">Awareness:</h3>
+        <ul>
+            <li>Increasing awareness among farmers, especially those practicing organic farming</li>
+            <li>Government extension services promote green manure practices</li>
+        </ul>
+    
+        <h2 style="font-weight: bold;">Fish Emulsion</h2>
+        <h3 style="font-weight: bold;">Uses:</h3>
+        <ul>
+            <li>Provides essential nutrients, especially nitrogen and phosphorus</li>
+            <li>Enhances plant growth and yield</li>
+            <li>Improves soil health</li>
+            <li>Boosts plant immunity</li>
+            <li>Can be used as a foliar spray or soil drench</li>
+        </ul>
+        <h3 style="font-weight: bold;">Advantages:</h3>
+        <ul>
+            <li>Quickly absorbed by plants</li>
+            <li>Highly concentrated nutrient source</li>
+            <li>Can be used in small quantities</li>
+            <li>Environmentally friendly</li>
+            <li>Improves soil microbial activity</li>
+        </ul>
+        <h3 style="font-weight: bold;">Availability:</h3>
+        <ul>
+            <li>Commercially available as liquid or powder form</li>
+            <li>Can be produced at home by fermenting fish waste</li>
+        </ul>
+        <h3 style="font-weight: bold;">Awareness:</h3>
+        <ul>
+            <li>Increasing awareness among organic farmers and gardeners</li>
+            <li>Used in both conventional and organic agriculture</li>
+        </ul>
+    
+        <h2 style="font-weight: bold;">Seaweed Extract</h2>
+        <h3 style="font-weight: bold;">Uses:</h3>
+        <ul>
+            <li>Provides essential micronutrients and hormones</li>
+            <li>Enhances plant growth and yield</li>
+            <li>Improves plant stress tolerance</li>
+            <li>Boosts plant immunity</li>
+            <li>Can be used as a foliar spray or soil drench</li>
+        </ul>
+        <h3 style="font-weight: bold;">Advantages:</h3>
+        <ul>
+            <li>Natural and organic product</li>
+            <li>Contains a wide range of beneficial compounds</li>
+            <li>Improves soil health</li>
+            <li>Enhances plant vigor and resilience</li>
+            <li>Can be used in various crops and plants</li>
+        </ul>
+        <h3 style="font-weight: bold;">Availability:</h3>
+        <ul>
+            <li>Commercially available in liquid or powder form</li>
+            <li>Extracted from various seaweed species</li>
+        </ul>
+        <h3 style="font-weight: bold;">Awareness:</h3>
+        <ul>
+            <li>Growing awareness among organic farmers and gardeners</li>
+            <li>Used in both conventional and organic agriculture</li>
+        </ul>
+    
+        <h2 style="font-weight: bold;">Bone Meal</h2>
+        <h3 style="font-weight: bold;">Uses:</h3>
+        <ul>
+            <li>Excellent source of phosphorus and calcium</li>
+            <li>Promotes root development and flower production</li>
+            <li>Improves soil structure</li>
+            <li>Enhances plant growth and yield</li>
+        </ul>
+        <h3 style="font-weight: bold;">Advantages:</h3>
+        <ul>
+            <li>Slow-release fertilizer</li>
+            <li>Natural and organic</li>
+            <li>Improves soil health over time</li>
+            <li>Reduces the need for chemical fertilizers</li>
+        </ul>
+        <h3 style="font-weight: bold;">Availability:</h3>
+        <ul>
+            <li>Commercially available in various forms (powder, pellets)</li>
+            <li>Can be made at home by processing animal bones</li>
+        </ul>
+        <h3 style="font-weight: bold;">Awareness:</h3>
+        <ul>
+            <li>Increasing awareness among gardeners and farmers</li>
+            <li>Used in both organic and conventional agriculture</li>
+        </ul>
+    
+        <h2 style="font-weight: bold;">Rock Phosphate</h2>
+        <h3 style="font-weight: bold;">Uses:</h3>
+        <ul>
+            <li>Provides phosphorus to plants</li>
+            <li>Improves soil structure</li>
+            <li>Enhances soil fertility</li>
+            <li>Reduces soil acidity</li>
+            <li>Can be used as a long-term fertilizer</li>
+        </ul>
+        <h3 style="font-weight: bold;">Advantages:</h3>
+        <ul>
+            <li>Natural and sustainable</li>
+            <li>Slow-release fertilizer</li>
+            <li>Improves soil health over time</li>
+            <li>Reduces the need for chemical fertilizers</li>
+            <li>Environmentally friendly</li>
+        </ul>
+        <h3 style="font-weight: bold;">Availability:</h3>
+        <ul>
+            <li>Commercially available in various forms (powder, granules)</li>
+            <li>Mined from natural deposits</li>
+        </ul>
+        <h3 style="font-weight: bold;">Awareness:</h3>
+        <ul>
+            <li>Increasing awareness among organic farmers and gardeners</li>
+            <li>Used in both organic and conventional agriculture</li>
+        </ul>
+    
+        <h2 style="font-weight: bold;">Fish Bone Meal</h2>
+        <h3 style="font-weight: bold;">Uses:</h3>
+        <ul>
+            <li>Excellent source of phosphorus, calcium, and other micronutrients</li>
+            <li>Promotes root development and flower production</li>
+            <li>Improves soil structure</li>
+            <li>Enhances plant growth and yield</li>
+        </ul>
+        <h3 style="font-weight: bold;">Advantages:</h3>
+        <ul>
+            <li>Natural and organic</li>
+            <li>Slow-release fertilizer</li>
+            <li>Improves soil health over time</li>
+            <li>Reduces the need for chemical fertilizers</li>
+            <li>Environmentally friendly</li>
+        </ul>
+        <h3 style="font-weight: bold;">Availability:</h3>
+        <ul>
+            <li>Commercially available in various forms (powder, pellets)</li>
+            <li>Can be made at home by processing fish bones</li>
+        </ul>
+        <h3 style="font-weight: bold;">Awareness:</h3>
+        <ul>
+            <li>Increasing awareness among gardeners and farmers</li>
+            <li>Used in both organic and conventional agriculture</li>
+        </ul>
+    
+        <h2 style="font-weight: bold;">Compost Tea</h2>
+        <h3 style="font-weight: bold;">Uses:</h3>
+        <ul>
+            <li>Provides a concentrated dose of beneficial microorganisms</li>
+            <li>Enhances plant growth and health</li>
+            <li>Improves soil fertility</li>
+            <li>Boosts plant immunity</li>
+            <li>Can be used as a foliar spray or soil drench</li>
+        </ul>
+        <h3 style="font-weight: bold;">Advantages:</h3>
+        <ul>
+            <li>Natural and organic</li>
+            <li>Easy to make at home</li>
+            <li>Environmentally friendly</li>
+            <li>Promotes sustainable agriculture</li>
+            <li>Can be used on a variety of plants</li>
+        </ul>
+        <h3 style="font-weight: bold;">Availability:</h3>
+        <ul>
+            <li>Can be made at home using compost and water</li>
+            <li>Commercially available in liquid form</li>
+        </ul>
+        <h3 style="font-weight: bold;">Awareness:</h3>
+        <ul>
+            <li>Increasing awareness among organic farmers and gardeners</li>
+            <li>Used in both organic and conventional agriculture</li>
+        </ul>
+    </div>
+      
+    {% endif %}
+</div>
+{% endblock %}
+
+
